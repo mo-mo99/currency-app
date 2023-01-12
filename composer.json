@@ -1,0 +1,22 @@
+{
+    "name": "mamad/currency-app",
+    "autoload": {
+        "psr-4": {
+            "Mamad\\CurrencyApp\\": "src/"
+        }
+    },
+    "authors": [
+        {
+            "name": "mo-mo99",
+            "email": "mohtashamimohamad99@gmail.com"
+        }
+    ],
+    "require": {
+        "bramus/router": "^1.6",
+        "jenssegers/blade": "^1.4",
+        "fabpot/goutte": "^4.0",
+        "dragonmantank/cron-expression": "^3.3",
+        "react/http": "^1.8",
+        "react/socket": "^1.12"
+    }
+}
