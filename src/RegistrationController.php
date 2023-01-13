@@ -90,15 +90,15 @@ class RegistrationController {
                 session_start();
                 $_SESSION["user_id"] = $user["id"];
                 $username = $user['name'];
-                echo $this->blade->render('home', ['name' => $username]);
+                echo $this->blade->render('home', ['user' => $username]);
             } 
             else {
                 echo $this->blade->render('login', ['is_invalid' => '1']);
             }
-            } 
-            else {
+            } else {
                 echo $this->blade->render('login', ['is_invalid' => '1']);
             }
+            
         
     }
 
@@ -106,7 +106,7 @@ class RegistrationController {
         
         session_start();
         session_destroy();
-        Header("location: /views/home.blade.php");
+        Header("location: /views/login.blade.php");
         
     }
 

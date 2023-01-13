@@ -1,3 +1,6 @@
+<?php
+$is_invalid;
+?>
 <!DOCTYPE html>
 <html lang="eng">
     <head>
@@ -9,11 +12,11 @@
     <body>
         <h1>Login</h1>
 
-        <?php if ($is_invalid) : ?>
+        <?php if (isset($is_invalid) && ($is_invalid)) : ?>
             <em>Invalid login</em>
         <?php endif; ?>
 
-        <form method="post">
+        <form action="/login" method="post">
             <div>
                 <label for="email">Email</label>
                 <input id="email" type="email" name="email"

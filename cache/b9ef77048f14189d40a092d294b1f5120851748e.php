@@ -1,6 +1,3 @@
-<?php
-$is_invalid;
-?>
 <!DOCTYPE html>
 <html lang="eng">
     <head>
@@ -12,11 +9,11 @@ $is_invalid;
     <body>
         <h1>Login</h1>
 
-        <?php if (isset($is_invalid) && ($is_invalid)) : ?>
+        <?php if ($is_invalid) : ?>
             <em>Invalid login</em>
         <?php endif; ?>
 
-        <form action="/login" method="post">
+        <form method="post">
             <div>
                 <label for="email">Email</label>
                 <input id="email" type="email" name="email"
@@ -31,4 +28,4 @@ $is_invalid;
 
         </form>
     </body>
-</html><?php /**PATH /Users/mamad/dev/php/currencyApp/views/login.blade.php ENDPATH**/ ?>
+</html><?php /**PATH /Users/mamad/dev/php/currencyApp/views//login.blade.php ENDPATH**/ ?>

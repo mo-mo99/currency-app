@@ -16,7 +16,18 @@ class HomeController {
 
     public function home()
     {
-        echo $this->blade->render('home');
+        session_start();
+        if (isset($_SESSION["user_id"])) {
+            $id = $_SESSION['user_id'];
+            $db = new DBController();
+            $sql = "SELECT name FROM users WHERE id = {$id}";
+            $result = pg_query($db->con, $sql);
+            $user = pg_fetch_assoc($result);
+            echo $this->blade->render('home', ['user' => $user['name']]);
+            } 
+            else {
+                echo $this->blade->render('home');
+            }
     }
 
     public function profile () 
@@ -29,9 +40,6 @@ class HomeController {
         echo $this->blade->render('profile', ['data' => $data, 'curs' => $curs_to_ruble]);
     }
 
-    public function calculate()
-    {
-        echo "no";
-    }
+   
 
 };

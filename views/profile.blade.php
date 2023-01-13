@@ -1,5 +1,5 @@
 <?php
-
+session_start();
 if($_SERVER['REQUEST_METHOD'] === 'POST')
 {
 $price_per_ruble;
@@ -21,6 +21,9 @@ if($_POST['ruble'] == 0){
 }
 
 ?>
+
+<?php if (isset($_SESSION["user_id"])): ?>
+
 <!DOCTYPE html>
 <html lang="eng">
     <head>
@@ -30,6 +33,7 @@ if($_POST['ruble'] == 0){
         <title>profile</title>
     </head>
     <body>
+    <p><a href="/home">Home</a></p>
         <h1>Profile</h1>
         
         <form method="post">
@@ -51,3 +55,7 @@ if($_POST['ruble'] == 0){
         </form>
     </body>
 </html>
+<?php else: ?>
+    
+    <?php Header('location: /views/login.blade.php') ?>
+<?php endif ?>
