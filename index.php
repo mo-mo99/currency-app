@@ -12,6 +12,7 @@ $app->post('/signup', 'RegistrationController@create');
 $app->get('/login', 'RegistrationController@loginIndex');
 $app->post('/login', 'RegistrationController@login');
 $app->get('/logout', 'RegistrationController@logout');
+$app->all('/profile', 'HomeController@profile');
 
 
 $app->run();

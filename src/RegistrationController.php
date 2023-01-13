@@ -15,6 +15,7 @@ class RegistrationController {
 
     public function index()
     {
+        
         echo $this->blade->render('signup');
     }
 

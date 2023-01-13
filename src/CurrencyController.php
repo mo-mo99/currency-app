@@ -1,6 +1,7 @@
 <?php
 
 namespace Mamad\CurrencyApp;
+
 require 'vendor/autoload.php';
 
 use Cron\CronExpression;
@@ -16,6 +17,9 @@ class CurrencyController {
     public function __construct()
     {
         $this->blade = new Blade('views', 'cache');
+        $cron = new CronExpression('0 0 */3 * *');
+        $currency = $this->save_currency();
+        $this->schedule($currency, $cron);
     }
 
     public function get_currency() {
@@ -40,49 +44,48 @@ class CurrencyController {
         array_pop($cur);
         $res = array_chunk($cur, 5);
         fclose($file);
+        unlink('data.csv');
         return $res;
     }
 
     public function save_currency(){
-        $currency = $this->get_currency();
+        $currencies = $this->get_currency();
         $db = new DBController();
-        for($x = 0; $x < sizeof($currency); $x++) {
+        pg_query($db->con, "DELETE FROM currency");
+        foreach($currencies as $currency) {
             
             $sql = sprintf("INSERT INTO currency (numcode, charcode, unit, name, rate) 
-            VALUES (%d, '%s', %d, '%s', %f);", $currency[$x][0],
-                                          $currency[$x][1],
-                                          $currency[$x][2],
-                                          $currency[$x][3],
-                                          $currency[$x][4]);
+            VALUES (%d, '%s', %d, '%s', %f);", $currency[0],
+                                          $currency[1],
+                                          $currency[2],
+                                          $currency[3],
+                                          $currency[4]);
             $res = pg_query($db->con, $sql);
         }
-        sizeof($currency);
         
     }
 
-    public function schedule(callable $task, CronExpression $cron): void
+    public function schedule($task, CronExpression $cron)
     {
         $now = new DateTime();
-        // CRON is due, run task asap:
+        
         if ($cron->isDue($now)) {
             Loop::futureTick(function () use ($task) {
                 $task();
             });
         }
-        // Function that executes the task
-        // and adds a timer to the event loop to execute the function again when the task is next due:
+        
         $schedule = function () use (&$schedule, $task, $cron) {
             $task();
             $now = new DateTime();
             $nextDue = $cron->getNextRunDate($now);
             Loop::addTimer($nextDue->getTimestamp() - $now->getTimestamp(), $schedule);
         };
-        // Add a timer to the event loop to execute the task when it is next due:
+        
         $nextDue = $cron->getNextRunDate($now);
         Loop::addTimer($nextDue->getTimestamp() - $now->getTimestamp(), $schedule);
     }
 
 }
+$cur = new CurrencyController();
 
-$a = new CurrencyController();
-print_r($a->save_currency());
